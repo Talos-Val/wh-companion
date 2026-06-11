@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Warhammer Companion — Prince of Crows</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --gold-dim: #7a6030;
+    --bg: #0d0b08;
+    --bg2: #131009;
+    --bg3: #1a1610;
+    --bg4: #211d14;
+    --text: #d4c9a8;
+    --text-dim: #7a7060;
+    --red: #8b1a1a;
+    --red-light: #c0392b;
+    --blue: #1a2a4a;
+    --green: #1a3a1a;
+    --purple: #2a1a3a;
+    --border: #2a2418;
+    --border-gold: #3a3020;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'EB Garamond', serif;
+    font-size: 17px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(13,11,8,0.96);
+    border-bottom: 1px solid var(--border-gold);
+    display: flex; align-items: center; gap: 0;
+    padding: 0 2rem;
+    backdrop-filter: blur(6px);
+  }
+
+  .nav-logo {
+    font-family: 'Cinzel', serif;
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    padding: 1rem 1.5rem 1rem 0;
+    border-right: 1px solid var(--border-gold);
+    margin-right: 1.5rem;
+    white-space: nowrap;
+  }
+
+  .nav-links {
+    display: flex; gap: 0; overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+
+  .nav-link {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: 1.1rem 1rem;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    cursor: pointer;
+    background: none; border-top: none; border-left: none; border-right: none;
+  }
+  .nav-link:hover, .nav-link.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+
+  /* ── HERO ── */
+  #home {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.04) 0%, transparent 70%),
+      repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(201,168,76,0.015) 60px, rgba(201,168,76,0.015) 61px),
+      repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(201,168,76,0.015) 60px, rgba(201,168,76,0.015) 61px);
+  }
+
+  .hero-sigil {
+    font-size: 4rem; margin-bottom: 1.5rem;
+    animation: pulse 4s ease-in-out infinite;
+    position: relative;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+  }
+
+  .hero-eyebrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  h1.hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .hero-sub {
+    font-style: italic;
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    max-width: 500px;
+    margin: 0 auto 2.5rem;
+    position: relative;
+  }
+
+  .hero-nav-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    max-width: 900px;
+    width: 100%;
+    position: relative;
+  }
+
+  .hero-card {
+    background: var(--bg3);
+    border: 1px solid var(--border-gold);
+    padding: 1.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-align: center;
+  }
+  .hero-card:hover {
+    border-color: var(--gold);
+    background: var(--bg4);
+    transform: translateY(-2px);
+  }
+  .hero-card .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+  .hero-card .label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+  .hero-card .desc {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    margin-top: 0.3rem;
+    font-style: italic;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    display: none;
+    min-height: 100vh;
+    padding: 7rem 2rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section.active { display: block; }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .section-header .eyebrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    color: var(--gold-dim);
+    margin-bottom: 0.75rem;
+  }
+  .section-header h2 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+  .section-header p {
+    color: var(--text-dim);
+    font-style: italic;
+    margin-top: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border-gold);
+    margin: 2rem 0;
+  }
+
+  /* ── QUIZ ── */
+  .quiz-wrap { max-width: 680px; margin: 0 auto; }
+
+  .quiz-progress {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--gold-dim);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+  }
+  .progress-bar {
+    height: 2px;
+    background: var(--border);
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--gold);
+    transition: width 0.4s ease;
+  }
+
+  .quiz-question {
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .quiz-options { display: flex; flex-direction: column; gap: 0.75rem; }
+
+  .quiz-option {
+    background: var(--bg3);
+    border: 1px solid var(--border-gold);
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    color: var(--text);
+    font-family: 'EB Garamond', serif;
+    font-size: 1rem;
+    display: flex; align-items: flex-start; gap: 0.75rem;
+  }
+  .quiz-option:hover {
+    border-color: var(--gold);
+    background: var(--bg4);
+    color: var(--gold-light);
+  }
+  .quiz-option .opt-letter {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--gold-dim);
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+
+  .quiz-result {
+    background: var(--bg3);
+    border: 1px solid var(--gold);
+    padding: 2.5rem;
+    text-align: center;
+  }
+  .quiz-result .result-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .quiz-result .result-faction {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .quiz-result .result-allegiance {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    color: var(--gold-dim);
+    margin-bottom: 1.25rem;
+  }
+  .quiz-result .result-desc {
+    color: var(--text);
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+  }
+  .btn-ghost {
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    background: none;
+    border: 1px solid var(--gold-dim);
+    padding: 0.7rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--gold); background: rgba(201,168,76,0.06); }
+
+  /* ── GALAXY MAP ── */
+  .galaxy-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 2rem;
+    align-items: start;
+  }
+  @media(max-width:768px) { .galaxy-layout { grid-template-columns: 1fr; } }
+
+  .galaxy-svg-wrap {
+    background: var(--bg2);
+    border: 1px solid var(--border-gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .galaxy-svg-wrap svg { width: 100%; height: auto; display: block; }
+
+  .galaxy-info {
+    background: var(--bg3);
+    border: 1px solid var(--border-gold);
+    padding: 1.5rem;
+    position: sticky;
+    top: 5rem;
+  }
+  .galaxy-info .info-eyebrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--gold-dim);
+    margin-bottom: 0.5rem;
+  }
+  .galaxy-info h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+  .galaxy-info .info-allegiance {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    padding: 0.25rem 0.6rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+  }
+  .galaxy-info p {
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.75;
+  }
+  .galaxy-info .placeholder {
+    color: var(--text-dim);
+    font-style: italic;
+    font-size: 0.95rem;
+  }
+
+  .map-sector { cursor: pointer; transition: opacity 0.2s; }
+  .map-sector:hover .sector-circle { filter: brightness(1.5); }
+  .map-sector:hover .sector-label { fill: #e8c96a; }
+  .map-rift { pointer-events: none; }
+
+  /* ── CHARACTERS ── */
+  .char-filters {
+    display: flex; gap: 0.5rem; flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+  .filter-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--border-gold);
+    background: var(--bg3);
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: var(--bg4);
+  }
+
+  .char-search {
+    background: var(--bg3);
+    border: 1px solid var(--border-gold);
+    color: var(--text);
+    font-family: 'EB Garamond', serif;
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
+    width: 100%;
+    max-width: 360px;
+    margin-bottom: 1.5rem;
+    outline: none;
+  }
+  .char-search:focus { border-color: var(--gold); }
+  .char-search::placeholder { color: var(--text-dim); }
+
+  .char-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .char-card {
+    background: var(--bg3);
+    border: 1px solid var(--border-gold);
+    padding: 1.25rem;
+    transition: all 0.2s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .char-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; width: 3px; bottom: 0;
+  }
+  .char-card.loyal::before { background: var(--gold); }
+  .char-card.traitor::before { background: var(--red-light); }
+  .char-card.xenos::before { background: #4a7a4a; }
+  .char-card.independent::before { background: #4a6a8a; }
+  .char-card.chaos::before { background: #6a3a8a; }
+  .char-card:hover { border-color: var(--gold-dim); transform: translateY(-1px); }
+
+  .char-card .char-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.05rem;
+    color: var(--gold);
+    margin-bottom: 0.2rem;
+  }
+  .char-card .char-tags {
+    display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.75rem;
+  }
+  .char-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid;
+  }
+  .tag-loyal { border-color: var(--gold-dim); color: var(--gold-dim); }
+  .tag-traitor { border-color: #7a2a2a; color: #c05050; }
+  .tag-xenos { border-color: #3a6a3a; color: #6aaa6a; }
+  .tag-independent { border-color: #3a5a7a; color: #6a9aaa; }
+  .tag-chaos { border-color: #5a3a7a; color: #9a6aaa; }
+  .tag-dead { border-color: #4a4a4a; color: #7a7a7a; }
+  .tag-alive { border-color: #3a6a3a; color: #6aaa6a; }
+  .tag-unknown { border-color: #5a4a2a; color: #9a8a5a; }
+  .tag-daemon { border-color: #6a1a1a; color: #aa4a4a; }
+
+  .char-card .char-role {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-bottom: 0.6rem;
+  }
+  .char-card .char-desc {
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.65;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline-wrap { position: relative; max-width: 860px; margin: 0 auto; }
+
+  .timeline-wrap::before {
+    content: '';
+    position: absolute; left: 50%; top: 0; bottom: 0;
+    width: 1px; background: var(--border-gold);
+    transform: translateX(-50%);
+  }
+  @media(max-width:640px) {
+    .timeline-wrap::before { left: 1.5rem; }
+  }
+
+  .tl-item {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 0;
+    margin-bottom: 2.5rem;
+    align-items: start;
+  }
+  @media(max-width:640px) {
+    .tl-item { grid-template-columns: 3rem 1fr; }
+    .tl-item .tl-left { display: none; }
+    .tl-item .tl-center { flex-direction: column; align-items: center; }
+    .tl-item .tl-right { grid-column: 2; }
+  }
+
+  .tl-left { text-align: right; padding-right: 1.5rem; padding-top: 0.5rem; }
+  .tl-right { padding-left: 1.5rem; padding-top: 0.5rem; }
+
+  .tl-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  .tl-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    background: var(--bg);
+    flex-shrink: 0;
+    margin-top: 0.6rem;
+    position: relative;
+    z-index: 1;
+    transition: all 0.2s;
+  }
+  .tl-item:hover .tl-dot {
+    background: var(--gold);
+    box-shadow: 0 0 12px rgba(201,168,76,0.4);
+  }
+
+  .tl-date {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--gold-dim);
+    margin-bottom: 0.3rem;
+  }
+  .tl-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+  }
+  .tl-desc {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    line-height: 1.65;
+  }
+  .tl-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+  .badge-30k { border-color: #5a4a2a; color: #9a8a5a; }
+  .badge-40k { border-color: #2a4a6a; color: #5a8aaa; }
+  .badge-HH  { border-color: #6a2a2a; color: #aa5a5a; }
+
+  /* ── TRACKER ── */
+  .tracker-top {
+    display: flex; gap: 1rem; align-items: flex-end;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+  .tracker-top input, .tracker-top select {
+    background: var(--bg3);
+    border: 1px solid var(--border-gold);
+    color: var(--text);
+    font-family: 'EB Garamond', serif;
+    font-size: 1rem;
+    padding: 0.55rem 0.9rem;
+    outline: none;
+    flex: 1;
+    min-width: 140px;
+  }
+  .tracker-top input:focus, .tracker-top select:focus { border-color: var(--gold); }
+  .tracker-top select option { background: var(--bg3); }
+  .tracker-top label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--gold-dim);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  .btn-gold {
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    color: var(--bg);
+    background: var(--gold);
+    border: none;
+    padding: 0.65rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    align-self: flex-end;
+  }
+  .btn-gold:hover { background: var(--gold-light); }
+
+  .tracker-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .stat-box {
+    background: var(--bg3);
+    border: 1px solid var(--border-gold);
+    padding: 1rem;
+    text-align: center;
+  }
+  .stat-box .stat-num {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .stat-box .stat-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    margin-top: 0.3rem;
+  }
+
+  .tracker-board {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    overflow-x: auto;
+  }
+  @media(max-width:900px) { .tracker-board { grid-template-columns: repeat(3, 1fr); } }
+  @media(max-width:600px) { .tracker-board { grid-template-columns: repeat(2, 1fr); } }
+
+  .board-col {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    min-height: 300px;
+  }
+  .board-col-header {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    padding: 0.75rem 0.9rem;
+    border-bottom: 1px solid var(--border-gold);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .col-count {
+    background: var(--bg4);
+    border: 1px solid var(--border-gold);
+    font-size: 0.65rem;
+    padding: 0.1rem 0.45rem;
+    color: var(--text-dim);
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  .board-items { padding: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .mini-card {
+    background: var(--bg3);
+    border: 1px solid var(--border-gold);
+    padding: 0.65rem 0.75rem;
+    font-size: 0.85rem;
+    position: relative;
+  }
+  .mini-card .mc-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.82rem;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+  .mini-card .mc-meta {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+  }
+  .mini-card .mc-actions {
+    display: flex; gap: 0.3rem; margin-top: 0.5rem;
+  }
+  .mc-btn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--border-gold);
+    background: var(--bg);
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .mc-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .mc-btn.del:hover { border-color: var(--red-light); color: var(--red-light); }
+
+  .tracker-empty {
+    text-align: center; padding: 3rem 1rem;
+    color: var(--text-dim);
+    font-style: italic;
+    font-size: 0.9rem;
+    grid-column: 1/-1;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 1px solid var(--border-gold);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    margin-top: 4rem;
+  }
+  footer a { color: var(--gold-dim); text-decoration: none; }
+
+  .hidden { display: none !important; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg2); }
+  ::-webkit-scrollbar-thumb { background: var(--border-gold); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">☩ PRINCE OF CROWS</div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showSection('home')">Start</button>
+    <button class="nav-link" onclick="showSection('quiz')">⚔ Fraktions-Quiz</button>
+    <button class="nav-link" onclick="showSection('map')">🗺 Galaxie-Karte</button>
+    <button class="nav-link" onclick="showSection('chars')">📖 Charaktere</button>
+    <button class="nav-link" onclick="showSection('timeline')">⏳ Timeline</button>
+    <button class="nav-link" onclick="showSection('tracker')">🖌 Bemal-Tracker</button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div id="home" class="section active" style="max-width:100%; padding-top:0;">
+  <div style="min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:6rem 2rem 4rem; position:relative; overflow:hidden;">
+    <div class="hero-bg"></div>
+    <div class="hero-sigil">☩</div>
+    <div class="hero-eyebrow">Prince of Crows präsentiert</div>
+    <h1 class="hero-title">Warhammer<br>Companion</h1>
+    <p class="hero-sub">Fünf Werkzeuge für Kenner, Neueinsteiger und alle, die dazwischen stecken.</p>
+    <div class="hero-nav-grid">
+      <div class="hero-card" onclick="showSection('quiz')">
+        <div class="icon">⚔</div>
+        <div class="label">Fraktions-Quiz</div>
+        <div class="desc">Welche Armee bist du?</div>
+      </div>
+      <div class="hero-card" onclick="showSection('map')">
+        <div class="icon">🗺</div>
+        <div class="label">Galaxie-Karte</div>
+        <div class="desc">Sektoren & Territorien</div>
+      </div>
+      <div class="hero-card" onclick="showSection('chars')">
+        <div class="icon">📖</div>
+        <div class="label">Charaktere</div>
+        <div class="desc">Primarchs & Legenden</div>
+      </div>
+      <div class="hero-card" onclick="showSection('timeline')">
+        <div class="icon">⏳</div>
+        <div class="label">Timeline</div>
+        <div class="desc">Große Schlachten der Lore</div>
+      </div>
+      <div class="hero-card" onclick="showSection('tracker')">
+        <div class="icon">🖌</div>
+        <div class="label">Bemal-Tracker</div>
+        <div class="desc">Armee-Fortschritt tracken</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="section">
+  <div class="section-header">
+    <div class="eyebrow">TOOL I</div>
+    <h2>Fraktions-Quiz</h2>
+    <p>Beantworte 8 Fragen. Die Galaxie bestimmt deinen Platz.</p>
+  </div>
+  <div class="quiz-wrap">
+    <div id="quiz-progress-text" class="quiz-progress">FRAGE 1 / 8</div>
+    <div class="progress-bar"><div class="progress-fill" id="quiz-bar" style="width:12.5%"></div></div>
+    <div id="quiz-q" class="quiz-question"></div>
+    <div id="quiz-opts" class="quiz-options"></div>
+    <div id="quiz-result" class="quiz-result hidden"></div>
+  </div>
+</div>
+
+<!-- GALAXY MAP -->
+<div id="map" class="section">
+  <div class="section-header">
+    <div class="eyebrow">TOOL II</div>
+    <h2>Galaxie-Karte</h2>
+    <p>Klicke auf einen Sektor für mehr Informationen.</p>
+  </div>
+  <div class="galaxy-layout">
+    <div class="galaxy-svg-wrap">
+      <svg viewBox="0 0 700 600" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#1a1610"/>
+            <stop offset="100%" stop-color="#0a0806"/>
+          </radialGradient>
+          <radialGradient id="core" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.5"/>
+            <stop offset="60%" stop-color="#c9a84c" stop-opacity="0.1"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- background -->
+        <rect width="700" height="600" fill="url(#bgGrad)"/>
+        <!-- stars -->
+        <g fill="white" opacity="0.25">
+          <circle cx="80" cy="50" r="0.8"/><circle cx="200" cy="30" r="0.6"/><circle cx="500" cy="20" r="0.9"/>
+          <circle cx="620" cy="80" r="0.7"/><circle cx="650" cy="200" r="0.8"/><circle cx="30" cy="300" r="0.6"/>
+          <circle cx="670" cy="400" r="0.7"/><circle cx="50" cy="500" r="0.8"/><circle cx="600" cy="550" r="0.6"/>
+          <circle cx="150" cy="580" r="0.9"/><circle cx="350" cy="570" r="0.7"/><circle cx="120" cy="150" r="0.6"/>
+          <circle cx="580" cy="150" r="0.8"/><circle cx="690" cy="300" r="0.7"/><circle cx="10" cy="120" r="0.6"/>
+          <circle cx="430" cy="45" r="0.8"/><circle cx="260" cy="560" r="0.6"/><circle cx="680" cy="480" r="0.7"/>
+        </g>
+        <!-- galactic core glow -->
+        <ellipse cx="350" cy="300" rx="90" ry="70" fill="url(#core)"/>
+        <!-- The Great Rift -->
+        <path d="M350,40 C340,120 320,200 310,300 C300,400 310,480 350,560" stroke="#6a1a1a" stroke-width="18" stroke-opacity="0.3" fill="none" class="map-rift"/>
+        <path d="M350,40 C340,120 320,200 310,300 C300,400 310,480 350,560" stroke="#8b2020" stroke-width="5" stroke-opacity="0.5" fill="none" stroke-dasharray="6,4" class="map-rift"/>
+        <text x="270" y="300" fill="#8b2020" font-family="Share Tech Mono,monospace" font-size="8" opacity="0.7" transform="rotate(-85,310,300)">CICATRIX MALEDICTUM</text>
+
+        <!-- SECTORS -->
+        <!-- Terra / Sol -->
+        <g class="map-sector" onclick="mapClick('terra')">
+          <circle class="sector-circle" cx="350" cy="300" r="14" fill="#c9a84c" fill-opacity="0.25" stroke="#c9a84c" stroke-width="1.5" filter="url(#glow)"/>
+          <circle cx="350" cy="300" r="5" fill="#c9a84c"/>
+          <text class="sector-label" x="350" y="323" text-anchor="middle" fill="#c9a84c" font-family="Cinzel,serif" font-size="9" font-weight="600">TERRA</text>
+        </g>
+        <!-- Ultramar -->
+        <g class="map-sector" onclick="mapClick('ultramar')">
+          <circle class="sector-circle" cx="480" cy="240" r="11" fill="#1a3a6a" fill-opacity="0.5" stroke="#3a6aaa" stroke-width="1.5"/>
+          <circle cx="480" cy="240" r="4" fill="#3a6aaa"/>
+          <text class="sector-label" x="480" y="260" text-anchor="middle" fill="#7aaadd" font-family="Cinzel,serif" font-size="8">ULTRAMAR</text>
+        </g>
+        <!-- Fenris -->
+        <g class="map-sector" onclick="mapClick('fenris')">
+          <circle class="sector-circle" cx="200" cy="160" r="9" fill="#1a2a4a" fill-opacity="0.5" stroke="#4a6a9a" stroke-width="1.5"/>
+          <circle cx="200" cy="160" r="3.5" fill="#4a6aaa"/>
+          <text class="sector-label" x="200" y="178" text-anchor="middle" fill="#8aaacc" font-family="Cinzel,serif" font-size="8">FENRIS</text>
+        </g>
+        <!-- Eye of Terror -->
+        <g class="map-sector" onclick="mapClick('eye')">
+          <circle class="sector-circle" cx="130" cy="300" r="22" fill="#4a0a0a" fill-opacity="0.6" stroke="#8b1a1a" stroke-width="1.5" filter="url(#glow)"/>
+          <circle cx="130" cy="300" r="7" fill="#6a1010" stroke="#c03030" stroke-width="1"/>
+          <text class="sector-label" x="130" y="330" text-anchor="middle" fill="#c05050" font-family="Cinzel,serif" font-size="7.5">EYE OF TERROR</text>
+        </g>
+        <!-- Macragge -->
+        <g class="map-sector" onclick="mapClick('macragge')">
+          <circle class="sector-circle" cx="510" cy="200" r="8" fill="#1a2a5a" fill-opacity="0.5" stroke="#3a5a9a" stroke-width="1.5"/>
+          <circle cx="510" cy="200" r="3" fill="#3a5a9a"/>
+          <text class="sector-label" x="510" y="216" text-anchor="middle" fill="#7a9acc" font-family="Cinzel,serif" font-size="7.5">MACRAGGE</text>
+        </g>
+        <!-- Cadia -->
+        <g class="map-sector" onclick="mapClick('cadia')">
+          <circle class="sector-circle" cx="250" cy="290" r="9" fill="#1a1a2a" fill-opacity="0.5" stroke="#5a5aaa" stroke-width="1.5"/>
+          <circle cx="250" cy="290" r="3.5" fill="#5a5a8a"/>
+          <text class="sector-label" x="250" y="307" text-anchor="middle" fill="#8a8acc" font-family="Cinzel,serif" font-size="8">CADIA †</text>
+        </g>
+        <!-- Baal -->
+        <g class="map-sector" onclick="mapClick('baal')">
+          <circle class="sector-circle" cx="430" cy="370" r="8" fill="#2a1a1a" fill-opacity="0.5" stroke="#aa3a3a" stroke-width="1.5"/>
+          <circle cx="430" cy="370" r="3" fill="#8a2a2a"/>
+          <text class="sector-label" x="430" y="386" text-anchor="middle" fill="#cc6a6a" font-family="Cinzel,serif" font-size="7.5">BAAL</text>
+        </g>
+        <!-- Commorragh -->
+        <g class="map-sector" onclick="mapClick('commorragh')">
+          <circle class="sector-circle" cx="590" cy="380" r="9" fill="#2a1a3a" fill-opacity="0.5" stroke="#7a3aaa" stroke-width="1.5"/>
+          <circle cx="590" cy="380" r="3.5" fill="#5a2a8a"/>
+          <text class="sector-label" x="590" y="397" text-anchor="middle" fill="#aa7acc" font-family="Cinzel,serif" font-size="7.5">COMMORRAGH</text>
+        </g>
+        <!-- Isstvan -->
+        <g class="map-sector" onclick="mapClick('isstvan')">
+          <circle class="sector-circle" cx="200" cy="420" r="8" fill="#2a1a1a" fill-opacity="0.5" stroke="#aa4a2a" stroke-width="1.5"/>
+          <circle cx="200" cy="420" r="3" fill="#7a2a10"/>
+          <text class="sector-label" x="200" y="436" text-anchor="middle" fill="#cc7a5a" font-family="Cinzel,serif" font-size="7.5">ISSTVAN</text>
+        </g>
+        <!-- Necromunda -->
+        <g class="map-sector" onclick="mapClick('necromunda')">
+          <circle class="sector-circle" cx="400" cy="180" r="8" fill="#1a1a1a" fill-opacity="0.5" stroke="#6a6a4a" stroke-width="1.5"/>
+          <circle cx="400" cy="180" r="3" fill="#5a5a3a"/>
+          <text class="sector-label" x="400" y="196" text-anchor="middle" fill="#9a9a6a" font-family="Cinzel,serif" font-size="7.5">NECROMUNDA</text>
+        </g>
+        <!-- Tau Empire -->
+        <g class="map-sector" onclick="mapClick('tau')">
+          <circle class="sector-circle" cx="600" cy="280" r="11" fill="#1a3a3a" fill-opacity="0.5" stroke="#3aaaaa" stroke-width="1.5"/>
+          <circle cx="600" cy="280" r="4" fill="#2a8a8a"/>
+          <text class="sector-label" x="600" y="298" text-anchor="middle" fill="#6acccc" font-family="Cinzel,serif" font-size="8">TAU EMPIRE</text>
+        </g>
+        <!-- Noctilith Crown / Ork -->
+        <g class="map-sector" onclick="mapClick('armageddon')">
+          <circle class="sector-circle" cx="460" cy="440" r="9" fill="#1a1a0a" fill-opacity="0.5" stroke="#5a5a1a" stroke-width="1.5"/>
+          <circle cx="460" cy="440" r="3.5" fill="#3a3a10"/>
+          <text class="sector-label" x="460" y="456" text-anchor="middle" fill="#8a8a4a" font-family="Cinzel,serif" font-size="7.5">ARMAGEDDON</text>
+        </g>
+        <!-- Legend -->
+        <g transform="translate(20,530)">
+          <rect width="220" height="60" fill="#0d0b08" fill-opacity="0.85" stroke="#2a2418" stroke-width="1"/>
+          <text x="10" y="16" fill="#7a6030" font-family="Share Tech Mono,monospace" font-size="7" letter-spacing="1">LEGENDE</text>
+          <circle cx="18" cy="28" r="4" fill="#c9a84c" fill-opacity="0.5" stroke="#c9a84c" stroke-width="1"/>
+          <text x="28" y="31" fill="#9a8a6a" font-family="Share Tech Mono,monospace" font-size="7">Imperium</text>
+          <circle cx="18" cy="42" r="4" fill="#4a0a0a" fill-opacity="0.8" stroke="#8b1a1a" stroke-width="1"/>
+          <text x="28" y="45" fill="#9a8a6a" font-family="Share Tech Mono,monospace" font-size="7">Chaos</text>
+          <circle cx="88" cy="28" r="4" fill="#1a3a3a" fill-opacity="0.8" stroke="#3aaaaa" stroke-width="1"/>
+          <text x="98" y="31" fill="#9a8a6a" font-family="Share Tech Mono,monospace" font-size="7">Xenos</text>
+          <rect x="84" y="37" width="8" height="3" fill="#8b2020" opacity="0.6"/>
+          <text x="98" y="45" fill="#9a8a6a" font-family="Share Tech Mono,monospace" font-size="7">Großer Riss</text>
+        </g>
+      </svg>
+    </div>
+    <div class="galaxy-info">
+      <div class="info-eyebrow">SEKTOR-INFORMATION</div>
+      <h3 id="map-title">—</h3>
+      <div id="map-badge" class="info-allegiance" style="display:none"></div>
+      <p id="map-desc" class="placeholder">Klicke auf einen Sektor der Karte, um Details zu erhalten.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CHARACTERS -->
+<div id="chars" class="section">
+  <div class="section-header">
+    <div class="eyebrow">TOOL III</div>
+    <h2>Charaktere & Primarchs</h2>
+    <p>Primarchs, Helden und Schlüsselfiguren des 40k-Universums.</p>
+  </div>
+  <input type="text" class="char-search" id="char-search" placeholder="Name suchen..." oninput="filterChars()">
+  <div class="char-filters" id="char-filters">
+    <button class="filter-btn active" onclick="setFilter('all', this)">Alle</button>
+    <button class="filter-btn" onclick="setFilter('loyal', this)">⚜ Loyalisten</button>
+    <button class="filter-btn" onclick="setFilter('traitor', this)">☠ Verräter</button>
+    <button class="filter-btn" onclick="setFilter('chaos', this)">⛧ Chaos</button>
+    <button class="filter-btn" onclick="setFilter('xenos', this)">✺ Xenos</button>
+    <button class="filter-btn" onclick="setFilter('independent', this)">◈ Unabhängig</button>
+  </div>
+  <div class="char-grid" id="char-grid"></div>
+</div>
+
+<!-- TIMELINE -->
+<div id="timeline" class="section">
+  <div class="section-header">
+    <div class="eyebrow">TOOL IV</div>
+    <h2>Schlachten-Timeline</h2>
+    <p>Die prägendsten Momente des Imperiums — von der Kreuzzugszeit bis zur Gegenwart.</p>
+  </div>
+  <div class="timeline-wrap" id="timeline-wrap"></div>
+</div>
+
+<!-- TRACKER -->
+<div id="tracker" class="section">
+  <div class="section-header">
+    <div class="eyebrow">TOOL V</div>
+    <h2>Bemal-Tracker</h2>
+    <p>Verfolge den Fortschritt deiner Armee von der Schachtel bis zum Fertigmodell.</p>
+  </div>
+
+  <div class="tracker-top">
+    <div>
+      <label>EINHEIT / MODELL</label>
+      <input type="text" id="t-name" placeholder="z.B. Intercessor Squad">
+    </div>
+    <div>
+      <label>FRAKTION</label>
+      <input type="text" id="t-faction" placeholder="z.B. Ultramarines">
+    </div>
+    <div>
+      <label>ANZAHL</label>
+      <input type="number" id="t-count" placeholder="5" min="1" style="max-width:90px;">
+    </div>
+    <button class="btn-gold" onclick="addMini()">+ Hinzufügen</button>
+  </div>
+
+  <div class="tracker-stats">
+    <div class="stat-box"><div class="stat-num" id="stat-total">0</div><div class="stat-label">GESAMT</div></div>
+    <div class="stat-box"><div class="stat-num" id="stat-done">0</div><div class="stat-label">FERTIG</div></div>
+    <div class="stat-box"><div class="stat-num" id="stat-pct">0%</div><div class="stat-label">FORTSCHRITT</div></div>
+    <div class="stat-box"><div class="stat-num" id="stat-models">0</div><div class="stat-label">MODELLE</div></div>
+  </div>
+
+  <div class="tracker-board" id="tracker-board">
+    <div class="board-col" id="col-0"><div class="board-col-header">GEKAUFT <span class="col-count" id="cc-0">0</span></div><div class="board-items" id="items-0"></div></div>
+    <div class="board-col" id="col-1"><div class="board-col-header">GEBAUT <span class="col-count" id="cc-1">0</span></div><div class="board-items" id="items-1"></div></div>
+    <div class="board-col" id="col-2"><div class="board-col-header">GRUNDIERT <span class="col-count" id="cc-2">0</span></div><div class="board-items" id="items-2"></div></div>
+    <div class="board-col" id="col-3"><div class="board-col-header">BEMALT <span class="col-count" id="cc-3">0</span></div><div class="board-items" id="items-3"></div></div>
+    <div class="board-col" id="col-4"><div class="board-col-header">✓ FERTIG <span class="col-count" id="cc-4">0</span></div><div class="board-items" id="items-4"></div></div>
+  </div>
+</div>
+
+<footer>
+  <div>© 2026 PRINCE OF CROWS — ALLE RECHTE VORBEHALTEN</div>
+  <div style="margin-top:0.4rem">Warhammer 40.000 und alle zugehörigen Bezeichnungen sind Eigentum von Games Workshop Ltd.</div>
+  <div style="margin-top:0.4rem"><a href="https://talos-val.github.io/wh-guide/">← Zurück zum Lore-Guide</a></div>
+  <div style="margin-top:0.4rem"><a href="https://talos-val.github.io/database/">🗄 Datenbank</a></div>
+</footer>
+
+<script>
+// ── NAVIGATION ──
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  const map = {home:0,quiz:1,map:2,chars:3,timeline:4,tracker:5};
+  document.querySelectorAll('.nav-link')[map[id]].classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ── QUIZ ──
+const quizQuestions = [
+  {
+    q: "Ein Feind steht vor dir. Was ist dein erster Gedanke?",
+    opts: [
+      {t:"Angriff. Sofort. Mit voller Kraft.", scores:{SM:2,CSM:1,Ork:2}},
+      {t:"Taktik prüfen. Schwachstellen finden. Dann agieren.", scores:{Tau:2,Eldar:2,Necron:1}},
+      {t:"Für das Imperium. Kein Zweifel, kein Zögern.", scores:{SM:2,AM:2}},
+      {t:"Interessant. Mal sehen, was dieser Feind mir geben kann.", scores:{Tyranid:2,Necron:1,Chaos:1}}
+    ]
+  },
+  {
+    q: "Was ist der Sinn eines Lebens?",
+    opts: [
+      {t:"Kampf und Ruhm. Mehr braucht es nicht.", scores:{SM:2,Ork:3,CSM:1}},
+      {t:"Das Größere Gut. Gemeinschaft über das Individuum.", scores:{Tau:3,AM:1}},
+      {t:"Den Chaos-Göttern dienen. Ewige Macht erringen.", scores:{CSM:3,Chaos:2}},
+      {t:"Überleben. Und dabei möglichst effizient alles fressen.", scores:{Tyranid:3,Necron:1}}
+    ]
+  },
+  {
+    q: "Wie stehst du zur Religion?",
+    opts: [
+      {t:"Der Kaiser ist ein Gott. Punktum.", scores:{SM:1,AM:3}},
+      {t:"Glaube ist eine Schwäche. Logik regiert.", scores:{Necron:2,Tau:2,Eldar:1}},
+      {t:"Die Dunklen Götter sind real. Und sie schenken Macht.", scores:{CSM:3,Chaos:3}},
+      {t:"Unsere Ahnen-Götter führen uns. Und wir folgen ihnen.", scores:{Eldar:3,SM:1}}
+    ]
+  },
+  {
+    q: "Welche Waffe spricht dich am meisten an?",
+    opts: [
+      {t:"Bolter. Klassisch. Effektiv. Ikonik.", scores:{SM:2,AM:1}},
+      {t:"Ein riesiges Beil. So groß wie ein Mensch.", scores:{Ork:3,CSM:2}},
+      {t:"Psionische Kräfte. Geist ist die stärkste Waffe.", scores:{Eldar:2,CSM:1,SM:1}},
+      {t:"Railgun-Technologie. Präzision über Brutalität.", scores:{Tau:3,Necron:1}}
+    ]
+  },
+  {
+    q: "Deine Armee verliert die Hälfte ihrer Männer. Reaktion?",
+    opts: [
+      {t:"Trauer? Keine Zeit. Vorwärts, im Namen des Kaisers.", scores:{SM:2,AM:2}},
+      {t:"Taktischer Rückzug. Neugruppierung. Dann Gegenangriff.", scores:{Tau:2,Eldar:2}},
+      {t:"Verluste interessieren mich nicht. Ich bin unsterblich.", scores:{Necron:3,Tyranid:2}},
+      {t:"Mehr davon! Der Krieg macht mich stärker!", scores:{Ork:3,CSM:2,Chaos:1}}
+    ]
+  },
+  {
+    q: "Welches Wort beschreibt dich am besten?",
+    opts: [
+      {t:"Kompromisslos.", scores:{SM:2,AM:2,CSM:1}},
+      {t:"Strategisch.", scores:{Tau:2,Eldar:2,Necron:2}},
+      {t:"Hungrig.", scores:{Tyranid:3,Ork:2}},
+      {t:"Leidenschaftlich.", scores:{CSM:2,Chaos:2,Eldar:1}}
+    ]
+  },
+  {
+    q: "Was denkst du über die Menschheit?",
+    opts: [
+      {t:"Wir sind das Licht im Dunkel. Und wir werden überleben.", scores:{SM:3,AM:2}},
+      {t:"Laut, chaotisch, aber irgendwie nützlich.", scores:{Tau:2,Eldar:1}},
+      {t:"Protein.", scores:{Tyranid:3}},
+      {t:"Schwache Wesen. Ich war einmal wie sie.", scores:{Necron:3,CSM:1}}
+    ]
+  },
+  {
+    q: "Welches Setting reist dich am meisten an?",
+    opts: [
+      {t:"Düstere Kathedralen-Planeten. Imperiale Monumentalität.", scores:{SM:2,AM:2}},
+      {t:"Ewiger Psych-Sturm. Dimensionaler Wahnsinn.", scores:{CSM:2,Chaos:3,Eldar:1}},
+      {t:"High-Tech-Metropolen und diplomatische Intrigen.", scores:{Tau:3,Necron:1}},
+      {t:"Urjungle-Welten. Organisches Chaos überall.", scores:{Tyranid:2,Ork:2}}
+    ]
+  }
+];
+
+const factionResults = {
+  SM: {
+    name:"Space Marines",icon:"⚜",allegiance:"LOYALISTEN — ADEPTUS ASTARTES",
+    desc:"Du bist ein Beschützer. Du trägst die Last des Imperiums — nicht weil jemand dich zwingt, sondern weil du weißt, dass niemand sonst es kann. Bruderschaft, Disziplin und endloser Krieg sind dein Leben. Du spielst eine der ikonischsten Armeen der Wargaming-Geschichte."
+  },
+  AM: {
+    name:"Astra Militarum",icon:"☩",allegiance:"LOYALISTEN — IMPERIALE GARDE",
+    desc:"Kein Gott-Krieger. Kein genetisches Erbe. Nur du, dein Lasgun und Millionen Kameraden. Die Garde sind die wahren Helden — unbesungen, zahllos, aufopferungsvoll. Du bist der Fels, an dem die Wellen der Feinde brechen."
+  },
+  Eldar: {
+    name:"Aeldari / Eldar",icon:"✺",allegiance:"XENOS — URALTE STARKE RASSE",
+    desc:"Alt. Klug. Sterbend. Die Aeldari haben einmal die Galaxis beherrscht. Jetzt kämpfen sie ums Überleben, geführt von Schicksalsfäden, die sie allein sehen können. Du spielst Chess, während alle anderen Checkers spielen."
+  },
+  Tau: {
+    name:"Tau",icon:"◈",allegiance:"XENOS — FÜR DAS GRÖSSERE GUT",
+    desc:"Vernunft über Fanatismus. Das Gemeinwohl über das Individuum. In einer Galaxis voller Wahnsinn sind die Tau fast vernünftig — und genau das macht sie interessant. Technologie, Teamwork, und ein gefährlicher Optimismus."
+  },
+  Ork: {
+    name:"Orks",icon:"✺",allegiance:"XENOS — GREENSKINS",
+    desc:"WAAAGH! Du liebst das Chaos, den Krampf, den Lärm. Die Orks sind das ungezügeltste Vergnügen in Warhammer — und ironischerweise auch eines der faszinierendsten Völker der Lore. Kollektive Psychokinese. Sie kämpfen besser, wenn sie glauben es zu tun."
+  },
+  CSM: {
+    name:"Chaos Space Marines",icon:"☠",allegiance:"VERRÄTER — CHAOS",
+    desc:"Du warst einmal ein Held. Jetzt bist du etwas... mehr. Die Chaos Marines haben die tiefste Lore und die komplexesten Motivationen. Verrat, Tragödie, Macht. Für Spieler, die ihre Armee mit echter Geschichte wollen."
+  },
+  Chaos: {
+    name:"Daemons of Chaos",icon:"⛧",allegiance:"CHAOS — SÖHNE DER DUNKLEN GÖTTER",
+    desc:"Du bist kein Soldat. Du bist eine Manifestation der Emotion selbst. Dämonen existieren, weil die Menschheit sie erschafft. Du spielst buchstäblich mit dem kollektiven Unbewussten der Galaxis."
+  },
+  Necron: {
+    name:"Necrons",icon:"✦",allegiance:"XENOS — DIE UNSTERBLICHEN",
+    desc:"Du warst einmal Fleisch. Das ist vorbei. Unsterblich, kalt, und aus einem langen Schlaf erwacht, dem du nicht zugestimmt hast — die Necrons haben eine Geschichte, die alle anderen Fraktionen in den Schatten stellt. Du schläfst seit 65 Millionen Jahren. Du bist nicht begeistert."
+  },
+  Tyranid: {
+    name:"Tyraniden",icon:"✺",allegiance:"XENOS — DER SCHWARMGEIST",
+    desc:"Du bist kein Individuum. Du bist ein Teil von etwas Unermesslichem. Die Tyraniden kommen von außerhalb der Galaxis und ihr Ziel ist einfach: alles. Keine Diplomatie. Keine Gnade. Nur der Hunger."
+  }
+};
+
+let quizScores = {};
+let quizIdx = 0;
+
+function initQuiz() {
+  quizScores = {SM:0,AM:0,Eldar:0,Tau:0,Ork:0,CSM:0,Chaos:0,Necron:0,Tyranid:0};
+  quizIdx = 0;
+  document.getElementById('quiz-result').classList.add('hidden');
+  renderQuizQ();
+}
+
+function renderQuizQ() {
+  const q = quizQuestions[quizIdx];
+  document.getElementById('quiz-progress-text').textContent = `FRAGE ${quizIdx+1} / ${quizQuestions.length}`;
+  document.getElementById('quiz-bar').style.width = `${((quizIdx+1)/quizQuestions.length)*100}%`;
+  document.getElementById('quiz-q').textContent = q.q;
+  const letters = ['A','B','C','D'];
+  document.getElementById('quiz-opts').innerHTML = q.opts.map((o,i) =>
+    `<button class="quiz-option" onclick="quizAnswer(${i})">
+      <span class="opt-letter">${letters[i]}</span>
+      <span>${o.t}</span>
+    </button>`
+  ).join('');
+}
+
+function quizAnswer(i) {
+  const scores = quizQuestions[quizIdx].opts[i].scores;
+  for (const k in scores) quizScores[k] = (quizScores[k]||0) + scores[k];
+  quizIdx++;
+  if (quizIdx < quizQuestions.length) {
+    renderQuizQ();
+  } else {
+    showQuizResult();
+  }
+}
+
+function showQuizResult() {
+  const best = Object.entries(quizScores).sort((a,b)=>b[1]-a[1])[0][0];
+  const r = factionResults[best];
+  document.getElementById('quiz-opts').innerHTML = '';
+  document.getElementById('quiz-q').textContent = '';
+  document.getElementById('quiz-progress-text').textContent = 'ERGEBNIS';
+  document.getElementById('quiz-bar').style.width = '100%';
+  const el = document.getElementById('quiz-result');
+  el.innerHTML = `
+    <div class="result-icon">${r.icon}</div>
+    <div class="result-faction">${r.name}</div>
+    <div class="result-allegiance">${r.allegiance}</div>
+    <p class="result-desc">${r.desc}</p>
+    <button class="btn-ghost" onclick="initQuiz()">↺ Nochmal spielen</button>
+  `;
+  el.classList.remove('hidden');
+}
+
+// ── MAP ──
+const mapData = {
+  terra: {title:"Terra — Sol System", badge:"IMPERIUM", badgeColor:"#3a3020", badgeText:"#c9a84c",
+    desc:"Der Heilige Terra. Geburtsplanet der Menschheit und Heimat des Imperiums. Hier thront der Gott-Kaiser auf dem Goldenen Thron seit 10.000 Jahren. Die Seelen Tausender Psioniker werden täglich geopfert, um den Astronomican zu erhalten — den Leuchtturm, der Raumreisen durch den Warp ermöglicht."},
+  ultramar: {title:"Ultramar", badge:"LOYALISTEN", badgeColor:"#1a2a5a", badgeText:"#7aaadd",
+    desc:"Das Herrschaftsgebiet der Ultramarines unter Primarch Roboute Guilliman. 500 Welten, geführt wie ein Muster-Imperium — stabil, geordnet, funktionierend. Nach der Rückkehr Guillimans im 41. Jahrtausend das Epizentrum der Primaris-Initiative."},
+  fenris: {title:"Fenris", badge:"LOYALISTEN", badgeColor:"#1a2a4a", badgeText:"#8aaacc",
+    desc:"Eiskalte Heimwelt der Space Wolves. Ein Todesplanet mit wenigen Überlebenden — und genau deshalb züchtet er die härtesten Krieger des Imperiums. Leman Russ, Primarch der Space Wolves, verschwand nach der Heresy spurlos in den Warp."},
+  eye: {title:"Eye of Terror", badge:"CHAOS", badgeColor:"#3a0a0a", badgeText:"#c05050",
+    desc:"Wo der Warp in die Realität eindringt. Die größte Anomalie der Galaxis — entstanden durch den Fall der Aeldari und den Aufstieg Slaanesh'. Hier haben die Traitor Legionen ihr Refugium. Abaddons Schwarze Festung zieht von hier aus in die Schwarzen Kreuzzüge."},
+  macragge: {title:"Macragge", badge:"LOYALISTEN", badgeColor:"#1a2a5a", badgeText:"#7a9acc",
+    desc:"Hauptplanet und Regierungssitz von Ultramar. Hier wacht Guilliman über das Imperium Secundus — und von hier aus koordiniert er den Indomitus-Kreuzzug, seine letzte verzweifelte Antwort auf den Großen Riss."},
+  cadia: {title:"Cadia †", badge:"GEFALLEN", badgeColor:"#2a2a3a", badgeText:"#8a8acc",
+    desc:"Die Festungswelt an den Pylonen des Eye of Terror — und das Tor, durch das jede Schwarze Kreuzzug strömte. Cadia fiel während Abaddons 13. Schwarzer Kreuzzug. Die Planeten brach — aber Cadia stand, bevor es fiel. 'Cadia stands' bleibt der Schlachtruf."},
+  baal: {title:"Baal", badge:"LOYALISTEN", badgeColor:"#2a1a1a", badgeText:"#cc6a6a",
+    desc:"Heimwelt der Blood Angels und ihrer Successor Chapters. Radioaktiver Wüstenplanet. Die Söhne Sanguinius kämpfen hier nicht nur gegen äußere Feinde, sondern auch gegen die Schwarze Wut und den Roten Durst — ihren ererbten Fluch."},
+  commorragh: {title:"Commorragh", badge:"XENOS / DARK ELDAR", badgeColor:"#2a1a3a", badgeText:"#aa7acc",
+    desc:"Die Dunkle Stadt — eine riesige Metropole im Webway, dem dimensionalen Tunnelsystem der Aeldari. Hier herrschen die Drukhari. Kein Ort für Gefangene. Alle Grausamkeiten, die man sich vorstellen kann — und mehr."},
+  isstvan: {title:"Isstvan V", badge:"WENDEPUNKT", badgeColor:"#2a1a0a", badgeText:"#cc7a5a",
+    desc:"Das Drop Site Massaker. Hier vernichteten die verräterischen Primarchs drei loyale Legionen in einem Hinterhalt. Das Blutbad auf Isstvan V gilt als der Moment, an dem die Horus-Heresy unumkehrbar wurde. Acht Legionen standen gegen drei."},
+  necromunda: {title:"Necromunda", badge:"IMPERIUM / HIVEWORLD", badgeColor:"#2a2a1a", badgeText:"#9a9a6a",
+    desc:"Archetypischer Hiveworld. Milliarden Menschen leben in kolossalen Hive-Städten, während die Oberschicht in Luxus schwelgt und die Underhive in Gesetzlosigkeit versinkt. Quelle unerschöpflicher Arbeitskräfte für das Imperium — und Reservoir für den Astra Militarum."},
+  tau: {title:"Tau-Imperium", badge:"XENOS / TAU", badgeColor:"#1a3a3a", badgeText:"#6acccc",
+    desc:"Das am schnellsten expandierende Xenos-Reich der Galaxis. Die Tau glauben ans Größere Gut — ein kollektivistisches Ethos, das Effizienz, Diplomatie und Technologie vereint. Zu klein, um die Galaxis zu dominieren. Zu hartnäckig, um aufzuhören."},
+  armageddon: {title:"Armageddon", badge:"IMPERIUM / SCHLACHTFELD", badgeColor:"#1a1a0a", badgeText:"#8a8a4a",
+    desc:"Industrieplanet. Dreimal der Schauplatz massiver Ork-Invasionen unter Ghazghkull Thraka. Die Schlachten um Armageddon zählen zu den größten Konflikten des 41. Jahrtausends. Noch immer wird dort gekämpft."}
+};
+
+function mapClick(id) {
+  const d = mapData[id];
+  if (!d) return;
+  document.getElementById('map-title').textContent = d.title;
+  const badge = document.getElementById('map-badge');
+  badge.textContent = d.badge;
+  badge.style.display = 'inline-block';
+  badge.style.background = d.badgeColor;
+  badge.style.color = d.badgeText;
+  badge.style.border = `1px solid ${d.badgeText}44`;
+  document.getElementById('map-desc').textContent = d.desc;
+  document.getElementById('map-desc').classList.remove('placeholder');
+}
+
+// ── CHARACTERS ──
+const characters = [
+  // PRIMARCHS - LOYAL
+  {name:"Roboute Guilliman",role:"Primarch der Ultramarines",allegiance:"loyal",status:"alive",tags:["loyal","alive"],
+   desc:"Lord Commander des Imperiums. Erwachte im 41. Jahrtausend nach jahrtausendealangem Koma. Versucht ein Imperium zu reformieren, das er nicht wiedererkennt — und scheitert an der Bürokratie, die er einst schuf."},
+  {name:"Sanguinius",role:"Primarch der Blood Angels",allegiance:"loyal",status:"dead",tags:["loyal","dead"],
+   desc:"Der schönste der Primarchs, der geflügelte Engel. Starb durch Horus' Hand auf der Terra-Belagerung — aber gab dem Imperator die nötige Zeit. Sein Tod ist das emotionalste Moment der Horus Heresy."},
+  {name:"Rogal Dorn",role:"Primarch der Imperial Fists",allegiance:"loyal",status:"unknown",tags:["loyal","unknown"],
+   desc:"Der Architekt. Befestigte Terra für die Belagerung. Gilt als gefallen, doch sein Körper wurde nie gefunden — nur eine abgetrennte Hand."},
+  {name:"Leman Russ",role:"Primarch der Space Wolves",allegiance:"loyal",status:"unknown",tags:["loyal","unknown"],
+   desc:"Der Wolf-König. Verschwand nach der Heresy in den Warp mit dem Versprechen zurückzukehren, wenn das Imperium ihn am meisten braucht. Die Space Wolves warten noch."},
+  {name:"Vulkan",role:"Primarch der Salamanders",allegiance:"loyal",status:"unknown",tags:["loyal","unknown"],
+   desc:"Meisterschmied und einer der beliebtesten Primarchs. Besitzt das Geschenk der Unsterblichkeit — kann nicht dauerhaft sterben. Sein aktueller Verbleib ist unbekannt."},
+  {name:"Jaghatai Khan",role:"Primarch der White Scars",allegiance:"loyal",status:"unknown",tags:["loyal","unknown"],
+   desc:"Der schnellste Primarch. Verschwand in den Webway, um Eldar-Piraten zu jagen. Gilt als verschollen, wird aber von den White Scars erwartet."},
+  {name:"Lion El'Jonson",role:"Primarch der Dark Angels",allegiance:"loyal",status:"alive",tags:["loyal","alive"],
+   desc:"Der Erste Primarch. Schlief seit der Heresy in den Tiefen der Festung seines Ordens — und erwachte kürzlich wieder. Die Dark Angels haben ein Geheimnis. Viele davon."},
+  // PRIMARCHS - TRAITOR
+  {name:"Horus Lupercal",role:"Warmaster & Primarch der Luna Wolves / Sons of Horus",allegiance:"traitor",status:"dead",tags:["traitor","dead"],
+   desc:"Der Verräter. Beliebtester Sohn des Imperators, korrumpiert durch Chaos. Führte neun Legionen in den größten Bruderkrieg der Geschichte. Starb durch die Hand des Imperators auf der Terra-Belagerung."},
+  {name:"Magnus der Rote",role:"Primarch der Thousand Sons",allegiance:"traitor",status:"daemon",tags:["traitor","daemon"],
+   desc:"Psioniker-Genie. Versuchte den Imperator zu warnen — und zerstörte dabei versehentlich das Webway-Projekt. Wurde von Leman Russ angegriffen, floh zum Chaos. Jetzt Dämonenprimarch Tzeentchs."},
+  {name:"Mortarion",role:"Primarch der Death Guard",allegiance:"traitor",status:"daemon",tags:["traitor","daemon"],
+   desc:"Der Sensenmann. Hasste Psioniker sein Leben lang — und wurde am Ende ein Werkzeug Nurgles. Sein Schiff versank in einem Nurgle-Sturm auf dem Weg nach Terra. Er überlebte... verändert."},
+  {name:"Lorgar Aurelian",role:"Primarch der Word Bearers",allegiance:"traitor",status:"daemon",tags:["traitor","daemon"],
+   desc:"Der erste Gläubige. Erfand den Chaos-Kult und infizierte damit den Rest der Traitor-Legionen. Ohne Lorgar — keine Horus Heresy. Der Architekt vor dem Architekten."},
+  {name:"Fulgrim",role:"Primarch der Emperor's Children",allegiance:"traitor",status:"daemon",tags:["traitor","daemon"],
+   desc:"Einst der Vollkommenste unter den Primarchs. Dann besessen von einem Chaos-Schwert, korrumpiert von Slaanesh. Jetzt ein Dämonenprimarch — und glücklicher als je zuvor."},
+  {name:"Angron",role:"Primarch der World Eaters",allegiance:"traitor",status:"daemon",tags:["traitor","daemon"],
+   desc:"Versklavt, gefoltert, mit Nails im Schädel. Angrons Tragödie ist die dunkelste der Primarchs. Er wollte nie Krieger sein — er wollte mit seinen sterbenden Sklaven sterben. Das Imperium ließ ihn nicht."},
+  {name:"Konrad Curze / Night Haunter",role:"Primarch der Night Lords",allegiance:"traitor",status:"dead",tags:["traitor","dead"],
+   desc:"Sah seine eigene Ermordung voraus. Ließ es geschehen. Der Primarch des Terrors — ein Richter in einer Galaxis, die keine Gerechtigkeit verdient. Seine letzten Worte sind legendär."},
+  {name:"Perturabo",role:"Primarch der Iron Warriors",allegiance:"traitor",status:"daemon",tags:["traitor","daemon"],
+   desc:"Meister der Belagerungskunst. Jahrelang zur Undankbarkeit verdammt, während Dorn den Ruhm erntete. Wechselte die Seiten nicht aus Glauben — sondern aus erschöpfter Verbitterung."},
+  {name:"Alpharius / Omegon",role:"Primarch(s) der Alpha Legion",allegiance:"traitor",status:"unknown",tags:["traitor","unknown"],
+   desc:"Doppeltes Geheimnis. Zwillingsprimarchs — eines der größten Mysterien der Lore. Niemand weiß, wem sie wirklich dienen. Wir sind alle Alpharius."},
+  // KEY FIGURES
+  {name:"Erebus",role:"Erster Kaplan der Word Bearers",allegiance:"chaos",status:"alive",tags:["chaos","alive"],
+   desc:"Der eigentliche Architekt der Horus Heresy. Mehr als Lorgar, mehr als Horus — Erebus manipulierte die Ereignisse über Jahrzehnte. Ein Agent des Chaos in menschlicher Gestalt. Gehasst von fast jeder Figur der Horus Heresy — inklusive seiner eigenen Primarchs."},
+  {name:"Sevatar",role:"First Captain der Night Lords",allegiance:"traitor",status:"unknown",tags:["traitor","unknown"],
+   desc:"Einer der beliebtesten Charaktere der Horus Heresy-Romane. Zynisch, brutal, kompetent. Sein schwarzer Humor und seine Skrupellosigkeit machen ihn zum faszinierendsten Schurken-Helden der Night Lords-Saga. Sein Schicksal ist unbekannt."},
+  {name:"Belisarius Cawl",role:"Archmagos Dominus des Adeptus Mechanicus",allegiance:"loyal",status:"alive",tags:["loyal","alive"],
+   desc:"Das Projekt Primaris. Cawl arbeitete über 10.000 Jahre heimlich an der nächsten Generation der Space Marines — auf Guillimans Anweisung hin. Ältestes aktives Mitglied des Imperiums. Teilt Wissen in mundane Portionen, weil niemand die Gesamtheit verkraften könnte."},
+  {name:"Ahzek Ahriman",role:"Chief Librarian der Thousand Sons",allegiance:"traitor",status:"alive",tags:["traitor","alive"],
+   desc:"Wollte seinen Bruder retten. Führte den Rubric of Ahriman durch — und verwandelte die meisten seiner Bruder in leere Rüstungen. Verbannte sich damit selbst und sucht seitdem nach einer Möglichkeit, es rückgängig zu machen."},
+  {name:"Ciaphas Cain",role:"Commissar, HERO OF THE IMPERIUM",allegiance:"loyal",status:"alive",tags:["loyal","alive"],
+   desc:"Hält sich selbst für einen Feigling und Blender. Die Galaxis hält ihn für einen Helden. Beides ist irgendwie wahr. Cain ist Warhammers meistgeliebter Anti-Held — Blackadder im 41. Jahrtausend."},
+  {name:"Eldrad Ulthran",role:"Farseer des Craftworld Ulthwé",allegiance:"xenos",status:"alive",tags:["xenos","alive"],
+   desc:"Ältester und mächtigster Farseer der Aeldari. Sieht Jahrhunderte in die Zukunft — und manipuliert Ereignisse mit chirurgischer Präzision. Hat das Imperium gerettet. Hat das Imperium verraten. Beides, je nach Blickwinkel."},
+  {name:"Ghazghkull Mag Uruk Thraka",role:"Prophet von Gork und Mork",allegiance:"xenos",status:"alive",tags:["xenos","alive"],
+   desc:"Größter Ork-Warboss der Galaxis. Überleuchtete Armageddon zweimal. Sein Kopf wurde abgetrennt und wieder angenäht — er wurde nur größer davon. Der Glaube der Orks wirkt buchstäblich: Je mehr Orks ihm folgen, desto stärker wird er."},
+  {name:"Inquisitor Eisenhorn",role:"Inquisitor des Ordo Xenos",allegiance:"loyal",status:"alive",tags:["loyal","alive"],
+   desc:"Dan Abnetts bekanntester Charakter. Began als orthodoxer Inquisitor, wurde langsam zum Radikalen — und überschritt Grenzen, die nicht überschritten werden sollten. Die Eisenhorn-Trilogie gilt als bestes Einstiegswerk der Black Library."},
+  {name:"Abaddon der Verderber",role:"Anführer der Black Legion, Warmaster des Chaos",allegiance:"chaos",status:"alive",tags:["chaos","alive"],
+   desc:"13 Schwarze Kreuzzüge. Jeder mit einem Ziel. Cadia fiel beim 13. Gilt als mächtiger als Horus. Jahrelang Meme der Community ('armless Abaddon') wegen früher Modelle ohne Arme — bis das Modell überarbeitet wurde."},
+  {name:"Imotekh der Sturmlord",role:"Phaeron der Sautekh-Dynastie",allegiance:"xenos",status:"alive",tags:["xenos","alive"],
+   desc:"Mächtigster Necron-Herrscher im aktiven Dienst. Führt seine Streitkräfte mit militärischer Präzision und einem Hauch grimmiger Eleganz. Bekannt dafür, dass er gefangenen Offizieren die Hand abhackt — als Ehrung."},
+  {name:"Szarekh, der Stille König",role:"Hochkönig der Necrons",allegiance:"xenos",status:"alive",tags:["xenos","alive"],
+   desc:"Der Necron, der die biotransfer-Pakte mit den C'tan unterzeichnete und sein Volk damit zu Maschinen machte. Trägt diese Schuld seit 65 Millionen Jahren. Erwacht nun wieder — mit Plänen, die niemand vollständig versteht."},
+  {name:"Typhus der Herold",role:"Host of the Destroyer Hive",allegiance:"chaos",status:"alive",tags:["chaos","alive"],
+   desc:"War vor der Heresy schon ein Berserker. Führte das Schiff Mortarions in den Nurgle-Sturm. Trägt in sich den Destroyer Hive — eine lebende Plage, die aus ihm herausquillt. Nurgles liebstes Werkzeug."},
+  {name:"Be'lakor",role:"Erster Dämonenprinz",allegiance:"chaos",status:"alive",tags:["chaos","daemon"],
+   desc:"Der älteste Dämonenprinz aller Zeiten. Wurde von allen vier Chaosgöttern auserwählt — und dann von allen fallen gelassen. Sein ewiger Zorn richtet sich gegen Götter und Sterbliche gleichermaßen. Krönte Abaddon zum Warmaster."}
+];
+
+let currentFilter = 'all';
+
+function renderChars() {
+  const search = document.getElementById('char-search').value.toLowerCase();
+  const filtered = characters.filter(c => {
+    const matchFilter = currentFilter === 'all' || c.allegiance === currentFilter;
+    const matchSearch = c.name.toLowerCase().includes(search) || c.role.toLowerCase().includes(search);
+    return matchFilter && matchSearch;
+  });
+  document.getElementById('char-grid').innerHTML = filtered.map(c => `
+    <div class="char-card ${c.allegiance}">
+      <div class="char-name">${c.name}</div>
+      <div class="char-tags">${c.tags.map(t=>`<span class="char-tag tag-${t}">${tagLabel(t)}</span>`).join('')}</div>
+      <div class="char-role">${c.role}</div>
+      <div class="char-desc">${c.desc}</div>
+    </div>
+  `).join('') || '<div style="color:var(--text-dim);font-style:italic;padding:2rem;">Keine Charaktere gefunden.</div>';
+}
+
+function tagLabel(t) {
+  const m = {loyal:'LOYALIST',traitor:'VERRÄTER',xenos:'XENOS',independent:'UNABHÄNGIG',chaos:'CHAOS',dead:'GEFALLEN',alive:'AKTIV',unknown:'UNBEKANNT',daemon:'DÄMON'};
+  return m[t] || t.toUpperCase();
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderChars();
+}
+function filterChars() { renderChars(); }
+
+// ── TIMELINE ──
+const timelineEvents = [
+  {date:"~M15–M25", era:"30k", side:"left", title:"Age of Technology", badge:"PRÄ-IMPERIUM", badgeClass:"badge-30k",
+   desc:"Die Menschheit kolonisiert die Galaxis mit Technologien, die heute als Magie gelten. Der Standard-Template-Konstrukt (STC) verbreitet sich. Dann kollabiert alles im Age of Strife."},
+  {date:"~M30", era:"30k", side:"right", title:"Der Große Kreuzzug", badge:"GREAT CRUSADE", badgeClass:"badge-30k",
+   desc:"Der Imperator eint die Menschheit. An seiner Seite die 20 Primarchs mit ihren Legionen. Die Galaxis wird zurückerobert. Es ist die Hochzeit des Imperiums — das letzte Mal, dass Hoffnung echte Bedeutung hat."},
+  {date:"M30.005", era:"HH", side:"left", title:"Der Verrat auf Isstvan III", badge:"HORUS HERESY", badgeClass:"badge-HH",
+   desc:"Horus vernichtet loyale Elemente seiner eigenen Legion auf Isstvan III. Das erste Zeichen des Verrats. Wenige überleben — darunter Garro, der die Warnung nach Terra bringen kann."},
+  {date:"M30.006", era:"HH", side:"right", title:"Das Drop Site Massaker", badge:"HORUS HERESY", badgeClass:"badge-HH",
+   desc:"Auf Isstvan V werden drei loyale Legionen von acht verräterischen Legionen umzingelt und vernichtet. Das Massaker macht die Heresy unumkehrbar. Hunderttausende sterben in Stunden."},
+  {date:"M30.008", era:"HH", side:"left", title:"Der Fall von Prospero", badge:"HORUS HERESY", badgeClass:"badge-HH",
+   desc:"Leman Russ greift Prospero an, Heimwelt der Thousand Sons. Magnus flieht in den Warp zu Tzeentch. Seine gesamte Legion wird verdammt. Der Rubric folgt Jahrhunderte später."},
+  {date:"M30.014", era:"HH", side:"right", title:"Die Belagerung von Terra", badge:"HORUS HERESY", badgeClass:"badge-HH",
+   desc:"Horus und seine Legionen belagern Terra. Sanguinius stirbt durch Horus' Hand. Der Imperator teleportiert sich auf das Flaggschiff — tötet Horus, wird selbst tödlich verwundet. Der Goldene Thron beginnt."},
+  {date:"M31–M40", era:"40k", side:"left", title:"Das Lange Dunkel", badge:"AGE OF IMPERIUM", badgeClass:"badge-40k",
+   desc:"10.000 Jahre bürokratischen Zerfalls. Der Imperator wird zur Gottheit verehrt. Die Inquisition entsteht. Zahllose Kriege. Langsames Sterben auf kosmischer Ebene."},
+  {date:"M32", era:"40k", side:"right", title:"Der Rubric of Ahriman", badge:"THOUSAND SONS", badgeClass:"badge-40k",
+   desc:"Ahriman führt den mächtigsten Zauber seit der Heresy durch — und verdammt die meisten Thousand Sons zu leeren Rüstungen. Nur die mächtigsten Psioniker bleiben geistig intakt. Ahriman wird verbannt."},
+  {date:"M41.999", era:"40k", side:"left", title:"13. Schwarze Kreuzzug — Cadia fällt", badge:"ERA INDOMITUS", badgeClass:"badge-40k",
+   desc:"Abaddons größter Erfolg. Cadia wird vernichtet. Der Große Riss reißt die Galaxis entzwei. Alles verändert sich — zum ersten Mal seit Jahrtausenden bewegt sich die Lore vorwärts."},
+  {date:"M42", era:"40k", side:"right", title:"Guillimans Rückkehr & Der Indomitus-Kreuzzug", badge:"ERA INDOMITUS", badgeClass:"badge-40k",
+   desc:"Cawl und Yvraine erwecken Guilliman. Er sieht das Imperium — und ist nicht begeistert. Führt den Indomitus-Kreuzzug an, verteilt Primaris Marines. Reformiert, was er kann. Kämpft gegen den Rest."}
+];
+
+function renderTimeline() {
+  const el = document.getElementById('timeline-wrap');
+  el.innerHTML = timelineEvents.map(e => `
+    <div class="tl-item">
+      <div class="tl-left">
+        ${e.side==='left' ? `
+          <div class="tl-date">${e.date}</div>
+          <div class="tl-badge ${e.badgeClass}">${e.badge}</div>
+          <div class="tl-title">${e.title}</div>
+          <div class="tl-desc">${e.desc}</div>
+        ` : ''}
+      </div>
+      <div class="tl-center"><div class="tl-dot"></div></div>
+      <div class="tl-right">
+        ${e.side==='right' ? `
+          <div class="tl-date">${e.date}</div>
+          <div class="tl-badge ${e.badgeClass}">${e.badge}</div>
+          <div class="tl-title">${e.title}</div>
+          <div class="tl-desc">${e.desc}</div>
+        ` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── TRACKER ──
+let minis = JSON.parse(localStorage.getItem('wh-minis') || '[]');
+const colNames = ['Gekauft','Gebaut','Grundiert','Bemalt','Fertig'];
+
+function saveMinis() { localStorage.setItem('wh-minis', JSON.stringify(minis)); }
+
+function addMini() {
+  const name = document.getElementById('t-name').value.trim();
+  const faction = document.getElementById('t-faction').value.trim();
+  const count = parseInt(document.getElementById('t-count').value)||1;
+  if (!name) { document.getElementById('t-name').focus(); return; }
+  minis.push({id: Date.now(), name, faction, count, stage: 0});
+  saveMinis();
+  document.getElementById('t-name').value='';
+  document.getElementById('t-faction').value='';
+  document.getElementById('t-count').value='';
+  renderTracker();
+}
+
+function moveStage(id, dir) {
+  const m = minis.find(x=>x.id===id);
+  if (!m) return;
+  m.stage = Math.max(0, Math.min(4, m.stage + dir));
+  saveMinis(); renderTracker();
+}
+
+function deleteMini(id) {
+  minis = minis.filter(x=>x.id!==id);
+  saveMinis(); renderTracker();
+}
+
+function renderTracker() {
+  const cols = [0,1,2,3,4];
+  let totalModels = 0;
+  let doneModels = 0;
+  cols.forEach(s => {
+    const items = minis.filter(m=>m.stage===s);
+    document.getElementById(`cc-${s}`).textContent = items.length;
+    document.getElementById(`items-${s}`).innerHTML = items.map(m=>`
+      <div class="mini-card">
+        <div class="mc-name">${m.name}</div>
+        <div class="mc-meta">${m.faction ? m.faction+' · ' : ''}${m.count} Modell${m.count!==1?'e':''}</div>
+        <div class="mc-actions">
+          ${m.stage>0?`<button class="mc-btn" onclick="moveStage(${m.id},-1)">◀</button>`:''}
+          ${m.stage<4?`<button class="mc-btn" onclick="moveStage(${m.id},1)">▶</button>`:''}
+          <button class="mc-btn del" onclick="deleteMini(${m.id})">✕</button>
+        </div>
+      </div>
+    `).join('') || '';
+  });
+  minis.forEach(m => {
+    totalModels += m.count;
+    if (m.stage===4) doneModels += m.count;
+  });
+  const pct = totalModels ? Math.round(doneModels/totalModels*100) : 0;
+  document.getElementById('stat-total').textContent = minis.length;
+  document.getElementById('stat-done').textContent = minis.filter(m=>m.stage===4).length;
+  document.getElementById('stat-pct').textContent = pct+'%';
+  document.getElementById('stat-models').textContent = totalModels;
+}
+
+// ── INIT ──
+initQuiz();
+renderChars();
+renderTimeline();
+renderTracker();
+</script>
+</body>
+</html>
